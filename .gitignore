@@ -1,27 +1,32 @@
 # In assignment/.gitignore
 
-# Python virtual environment
-/myvenv/
-/venv/
-
-# Python cache files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.pyc
+*.pyd
+*.so
 
-# VS Code settings
+# Virtual Environments
+/myvenv/
+/venv/
+/env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Editor-specific folders
 .vscode/
+.idea/
 
 # Local cache for Hugging Face models
 /cache/
+/.cache/
 
-# Large data files (the user will download these themselves)
+# Large dataset files
+# The dataset is large and should be downloaded separately by the user.
 /SIC/data/
 
-*.h5
 
-*.pkl
-
-*.pt
-*.onnx
-*.ckpt
-/data/
+# OS-specific files
+.DS_Store
+Thumbs.db
