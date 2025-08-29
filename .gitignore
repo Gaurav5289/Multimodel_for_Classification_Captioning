@@ -1,0 +1,18 @@
+# In assignment/.gitignore
+
+# Python virtual environment
+/myvenv/
+/venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+
+# Local cache for Hugging Face models
+/cache/
+
+# Large data files (the user will download these themselves)
+/SIC/data/

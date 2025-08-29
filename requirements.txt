@@ -1,0 +1,13 @@
+# requirements.txt
+tensorflow
+scikit-learn
+pandas
+matplotlib
+seaborn
+fastapi
+uvicorn[standard]
+python-multipart
+pillow
+transformers
+torch
+pytest

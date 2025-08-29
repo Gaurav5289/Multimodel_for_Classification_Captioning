@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intelligent Scene Analysis System</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 40px 0;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 25px;
+      color: #2c3e50;
+      font-size: 28px;
+    }
+
+    input[type="file"] {
+      display: block;
+      margin: 20px auto;
+    }
+
+    button {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #007bff, #0056b3);
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #0056b3, #003f7f);
+    }
+
+    #results {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #f1f3f5;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      text-align: left;
+      display: none;
+    }
+
+    .loading {
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+
+    img#preview {
+      max-width: 100%;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Intelligent Scene Analysis</h1>
+    <input type="file" id="imageFile" accept="image/*">
+    <button onclick="analyzeImage()">Analyze Image</button>
+    <div id="results"></div>
+    <img id="preview" class="hidden" />
+  </div>
+
+  <script>
+    async function analyzeImage() {
+      const fileInput = document.getElementById('imageFile');
+      const resultsDiv = document.getElementById('results');
+      const previewImg = document.getElementById('preview');
+
+      if (fileInput.files.length === 0) {
+        alert("Please select an image first.");
+        return;
+      }
+
+      const file = fileInput.files[0];
+
+      // Preview the selected image
+      previewImg.src = URL.createObjectURL(file);
+      previewImg.classList.remove('hidden');
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      resultsDiv.style.display = "block";
+      resultsDiv.textContent = "Analyzing... Please wait.";
+      resultsDiv.className = "loading";
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/predict", {
+          method: "POST",
+          body: formData
+        });
+
+        if (!response.ok) {
+          const errMsg = await response.text();
+          throw new Error(`Server Error: ${response.status} ${errMsg}`);
+        }
+
+        const data = await response.json();
+
+        // Format the results nicely
+        resultsDiv.className = "";
+        resultsDiv.innerHTML = `
+✅ <strong>Predicted Scene:</strong> ${data.predicted_class}
+📊 <strong>Confidence Score:</strong> ${data.confidence_score ? data.confidence_score.toFixed(4) : 'N/A'}
+❓ <strong>Uncertainty Estimate:</strong> ${data.uncertainty_estimate ? data.uncertainty_estimate.toFixed(4) : 'N/A'}
+📝 <strong>Caption:</strong> ${data.description}
+        `;
+
+      } catch (error) {
+        resultsDiv.className = "error";
+        resultsDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
