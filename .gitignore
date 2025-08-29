@@ -16,3 +16,12 @@ __pycache__/
 
 # Large data files (the user will download these themselves)
 /SIC/data/
+
+*.h5
+
+*.pkl
+
+*.pt
+*.onnx
+*.ckpt
+/data/
