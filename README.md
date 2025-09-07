@@ -1,6 +1,6 @@
 # Intelligent Scene Analysis System
 
-This project is an end-to-end machine learning service that classifies natural scene images, generates descriptive captions, and provides confidence and uncertainty scores, all served via a containerized REST API. This was developed as a submission for the ServiceHive AI/ML Intern Assessment.
+This project is an end-to-end machine learning service that classifies natural scene images, generates descriptive captions, and provides confidence and uncertainty scores, all served via a containerized REST API. 
 
 ## Key Features
 
